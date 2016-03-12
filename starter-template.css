@@ -1,0 +1,27 @@
+body {
+  padding-top: 50px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+
+#gonnaBeOnTheBottom {
+    position: absolute;
+    #bottom: 0;
+}
+
+#console-container {
+    height: 60px;
+    position: relative;
+    background-color: #000000;
+    background-repeat: no-repeat;
+    height: 50px;
+}
+
+#console {
+    font-family: monospace;
+    color: bisque
+}

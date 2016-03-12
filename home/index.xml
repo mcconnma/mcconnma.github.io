@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on Science, Technology, Innovation</title>
+    <link>http://www.mcconn.xyz/home/</link>
+    <description>Recent content in Homes on Science, Technology, Innovation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 Sep 2015 14:28:11 -0400</lastBuildDate>
+    <atom:link href="http://www.mcconn.xyz/home/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title></title>
+      <link>http://www.mcconn.xyz/home/purpose/</link>
+      <pubDate>Thu, 17 Sep 2015 14:28:11 -0400</pubDate>
+      
+      <guid>http://www.mcconn.xyz/home/purpose/</guid>
+      <description>&lt;p&gt;The purpose of the following posts to write about and explore various technologies.&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s a combination of hardware and software projects.&lt;/p&gt;
+
+&lt;p&gt;Primary interest is in home automation and the &amp;lsquo;Internet of Things&amp;rsquo;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
