@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Test on Science, Technology, Innovation</title>
-    <link>http://www.mcconn.xyz/tags/test/</link>
+    <link>http://mcconnma.github.io/tags/test/</link>
     <description>Recent content in Test on Science, Technology, Innovation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 08 Nov 2014 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://www.mcconn.xyz/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://mcconnma.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>How to blink a light in 10&#43; different programming languages</title>
-      <link>http://www.mcconn.xyz/posts/blinklight-10-languages/</link>
+      <link>http://mcconnma.github.io/posts/blinklight-10-languages/</link>
       <pubDate>Sat, 08 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://www.mcconn.xyz/posts/blinklight-10-languages/</guid>
+      <guid>http://mcconnma.github.io/posts/blinklight-10-languages/</guid>
       <description>
 
 &lt;h3 id=&#34;purpose:90794bf58092a6a1b29685accbdbb066&#34;&gt;Purpose&lt;/h3&gt;

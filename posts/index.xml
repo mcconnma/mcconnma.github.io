@@ -2,22 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Science, Technology, Innovation</title>
-    <link>http://www.mcconn.xyz/posts/</link>
+    <link>http://mcconnma.github.io/posts/</link>
     <description>Recent content in Posts on Science, Technology, Innovation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Feb 2015 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://www.mcconn.xyz/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Sep 2015 14:20:41 -0400</lastBuildDate>
+    <atom:link href="http://mcconnma.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Wirelessly Control Electrical Switches with BeagleBone</title>
+      <link>http://mcconnma.github.io/posts/wirelesscontrol/</link>
+      <pubDate>Fri, 18 Sep 2015 14:20:41 -0400</pubDate>
+      
+      <guid>http://mcconnma.github.io/posts/wirelesscontrol/</guid>
+      <description>
+
+&lt;h2 id=&#34;say-what:a2110d1f324d3511cd218797d19765b0&#34;&gt;Say What?&lt;/h2&gt;
+
+&lt;p&gt;So what are you trying to do?&lt;/p&gt;
+
+&lt;h2 id=&#34;setup:a2110d1f324d3511cd218797d19765b0&#34;&gt;Setup&lt;/h2&gt;
+
+&lt;p&gt;The wireless electrical switches are these:&lt;/p&gt;
+
+&lt;p&gt;Required Parts:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.com/gp/product/B00K7EEX2U/ref=as_li_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=B00K7EEX2U&amp;amp;linkCode=as2&amp;amp;tag=zambombo-20&amp;amp;linkId=EXFKNFZOUCBUCODP&#34;&gt;BeagleBone Black&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.robotshop.com/en/seeedstudio-433mhz-low-cost-transmitter-receiver-pair.html&#34;&gt;RF 433 MHz receiver/transmitter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.amazon.com/gp/product/B00DQELHBS/ref=as_li_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=B00DQELHBS&amp;amp;linkCode=as2&amp;amp;tag=zambombo-20&amp;amp;linkId=T7SZ5JULQOCZDFAZ&#34;&gt;Etekcity Programmable Remote Control Electrical Plug &amp;amp; Outlet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.adafruit.com/product/572&#34;&gt;Beaglebone Proto Cape&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://mcconnma.github.io/572-00.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Permutations and solutions of a childrens trainset</title>
-      <link>http://www.mcconn.xyz/posts/trainset-p1/</link>
+      <link>http://mcconnma.github.io/posts/trainset-p1/</link>
       <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://www.mcconn.xyz/posts/trainset-p1/</guid>
+      <guid>http://mcconnma.github.io/posts/trainset-p1/</guid>
       <description>&lt;p&gt;The purpose of this post is to explore and discover the number of permutations of a childrens 16 piece train track set.&lt;br /&gt;
 The &lt;a href=&#34;http://www.ikea.com/ca/en/catalog/products/30064359/&#34;&gt;trainset&lt;/a&gt; of interest is the following:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/lillabo-trainset.jpg&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/lillabo-trainset.jpg&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;This particular trainset has a total of 16 track piecies, 12 curved and 4 straight.
 The curved pieces are reversible (the straight ones are not) and 2 of the 4 straight pieces form a bridge as in the picture.
@@ -48,7 +77,7 @@ In that case, the general formula for the number of permutations is the followin
 &lt;p&gt;Most programming languages have functions or libraries for generating permuations, such as for &lt;a href=&#34;https://docs.python.org/2/library/itertools.html&#34;&gt;Python&lt;/a&gt;.
 However, using this approach did prove unpractical (runing on my old PC for example) due to the number of solutions that needed to be tested.
 A solution that worked better was to use a a [K-ary tree or ternary tree][kary-tree] where K=3 and cr=&amp;lsquo;curve right&amp;rsquo;, cl=&amp;lsquo;curve left&amp;rsquo;, and s=&amp;lsquo;straight&amp;rsquo; and looks like the following:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/tree.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/tree.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;In this approach, I could test the path to a particular node for given depths of tree 8-16.
 This proved to be more practical as it removes duplicates from the permutations approach.
@@ -116,7 +145,7 @@ total checked: 6561
 &lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;and the solution looks like:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Running for depth 9 produced 0 solutions:
 &lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 9
@@ -130,7 +159,7 @@ total checked: 59049
 &lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;and the solution looks like:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/10-245.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/10-245.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Running for depth 11 produced 0 solutions:
 &lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 11
@@ -145,7 +174,7 @@ total checked: 531441
 &lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 12 pieces:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/12.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/12.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Running for depth 13 produced 0 solutions:
 &lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 13
@@ -167,7 +196,7 @@ total checked: 4,782,969
 &lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 14 pieces:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/14.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/14.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Running for depth 15 produced 0 solutions:
 &lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 15
@@ -196,7 +225,7 @@ $ total checked: 43,046,721
 &lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 16 pieces:
-&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://www.mcconn.xyz/trainset/16.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/16.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;A few notes:&lt;/p&gt;
 
@@ -221,10 +250,10 @@ $ total checked: 43,046,721
     
     <item>
       <title>How to blink a light in 10&#43; different programming languages</title>
-      <link>http://www.mcconn.xyz/posts/blinklight-10-languages/</link>
+      <link>http://mcconnma.github.io/posts/blinklight-10-languages/</link>
       <pubDate>Sat, 08 Nov 2014 00:00:00 +0000</pubDate>
       
-      <guid>http://www.mcconn.xyz/posts/blinklight-10-languages/</guid>
+      <guid>http://mcconnma.github.io/posts/blinklight-10-languages/</guid>
       <description>
 
 &lt;h3 id=&#34;purpose:90794bf58092a6a1b29685accbdbb066&#34;&gt;Purpose&lt;/h3&gt;
