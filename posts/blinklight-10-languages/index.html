@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/favicon.ico">
+  <title>Science, Technolgy, Innovation</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+  
+  <link href="/starter-template.css" rel="stylesheet">
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" style="margin-left:0px">
+        <div class="navbar-header">
+            
+            <a class="navbar-brand" href="/">Science, Technology, Innovation</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              
+               
+                <li><a href="/about">About</a></li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+  <div class="container-fluid">
+    <div class="row">
+      
+      <div class="col-md-9">
+        <div class="page-content">
+          <h1 style="color:black">How to blink a light in 10&#43; different programming languages</h1>
+          <div class="wrapper">
+
+<h3 id="purpose:90794bf58092a6a1b29685accbdbb066">Purpose</h3>
+
+<p>The purpose of this post is to demonstrate the diversity and availability of programming languages on <strong>embedded Linux platforms</strong>, like the BeagleBone and Raspberry Pi.
+It is <strong><em>not</em></strong> meant to demonstrate how it would or could be done on platform X or platform Y, such as Arduino.
+Additionally, it based on and assumed that the Linux kernel has included the [GPIO Sysfs Interface for Userspace][linuxgpio].
+If you are not familiar with it, it maps the SoCs hardware to the Linux file system.
+For example, on the BeagleBone, there are 4 &lsquo;user&rsquo; leds that are mapped to the file system as follows.</p>
+
+<pre><code>/sys/class/leds/beaglebone\:green\:usr[0-3]
+</code></pre>
+
+<h3 id="why-do-this:90794bf58092a6a1b29685accbdbb066">Why do this?</h3>
+
+<p>The examples below are simple and basically open a file and write to it, however, I think it demonstrates two things:</p>
+
+<ol>
+<li>There are serveral languages that are quite easily installed from the package manager of the Linux distribution running on the SoC.</li>
+<li>The blinking light is the hardware hacking equivalent of the ‘Hello World’ program in software. If you can blink a light programatically, you can extend that to reading sensors and controlling actuators.</li>
+</ol>
+
+<p>You can use these examples as a starting point and extend them to your own projects. I am personally interested in the &lsquo;Internet of Things&rsquo; and/or Home Automation.</p>
+
+<p>A great book that I&rsquo;ve read on the BeagleBone is by <a href="http://www.amazon.com/gp/product/1118935128/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=1118935128&amp;linkCode=as2&amp;tag=mcconnxyz00-20&amp;linkId=SGUGT7NOZK36PW5O">Derek Molloy</a>.</p>
+
+<p>I&rsquo;ve also used the BeagleBone Black and RPi 2 for these examples:</p>
+
+<div style="text-align: center">
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=qf_sp_asin_til&ad_type=product_link&tracking_id=mcconnxyz00-20&marketplace=amazon&region=US&placement=B00CHYOLHK&asins=B00CHYOLHK&linkId=UIS4RGKPU2YEZW7P&show_border=true&link_opens_in_new_window=true">
+</iframe>
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=qf_sp_asin_til&ad_type=product_link&tracking_id=mcconnxyz00-20&marketplace=amazon&region=US&placement=B00T2U7R7I&asins=B00T2U7R7I&linkId=SD2NN3MVBGGS4KYL&show_border=true&link_opens_in_new_window=true">
+</iframe>
+</div>
+
+<h3 id="first-steps:90794bf58092a6a1b29685accbdbb066">First Steps</h3>
+
+<p>I am making the following assumptions:</p>
+
+<ul>
+<li>you already have a Linux version running on your platform</li>
+<li>a package manager is available to install software (the examples below use debian&rsquo;s apt-get)</li>
+<li>you can connect into your platform, either through telnet or ssh</li>
+<li>you can compile and run the various examples based on the programming language (although I should add that as well to the examples)</li>
+</ul>
+
+<h3 id="notes-about-the-examples:90794bf58092a6a1b29685accbdbb066">Notes about the examples</h3>
+
+<ul>
+<li>I am using the default provided user leds on BeagleBone which are mapped via GPIO Sysfs</li>
+<li>these are simple examples and wouldn&rsquo;t be used in production and therefore best practices are not always applied (see Why do this?)</li>
+<li>all the examples work, they blink an led on a beaglebone</li>
+<li>the examples could be coded differently to demonstrate the same thing</li>
+</ul>
+
+<h3 id="1-bash-shell:90794bf58092a6a1b29685accbdbb066">(1) Bash Shell</h3>
+
+<p>The first language we’ll use is the ‘bash’ shell. It’s installed by default.</p>
+
+<pre><code>#!/bin/bash
+STATE=0
+while :
+do
+  STATE=$((STATE==0))
+  echo $STATE &gt; /sys/class/leds/beaglebone\:green\:usr0/brightness
+  sleep 2
+done
+</code></pre>
+
+<h3 id="2-perl:90794bf58092a6a1b29685accbdbb066">(2) Perl</h3>
+
+<p>Perl is installed by default.</p>
+
+<pre><code>#!/usr/bin/perl
+use warnings;
+my $state = 1;
+my $filename = &quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;;
+
+while (1) {
+  open LED , &quot;&gt;&gt;$filename&quot; or die &quot;Error opening $filename: $!&quot;;
+  syswrite (LED, $state , 1);
+  $state = 1 - $state;
+  sleep 2;
+}
+</code></pre>
+
+<h3 id="3-c:90794bf58092a6a1b29685accbdbb066">(3) C</h3>
+
+<p>The C compiler (gcc) is installed by default.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+
+  FILE *fp = NULL;
+  char *filename = &quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;;
+  int state = 1;
+  int retval = 0;
+
+  if ((fp = fopen(filename, &quot;w&quot;)) == NULL) {
+    printf(&quot;failed to fopen led\n&quot;);
+    exit(-1);
+  }
+
+  for (;;) {
+    if ((retval = fputc('0' + state, fp)) == EOF) {
+      printf(&quot;failed to fputc led\n&quot;);
+      exit(-1);
+    }
+    fflush(fp);
+    sleep (2);
+    state = 1 - state;
+  }
+}
+</code></pre>
+
+<h3 id="4-c:90794bf58092a6a1b29685accbdbb066">(4) C++</h3>
+
+<p>The C++ compiler (g++) isn’t installed by default:</p>
+
+<p><code># sudo apt-get install g++</code></p>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+
+using namespace std;
+
+int main() {
+  ofstream led;
+  string filename(&quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;);
+  int state = 1;
+
+  led.open (filename.c_str(), ios::binary);
+  if (led.is_open()) {
+    while (true) {
+      led &lt;&lt; state &lt;&lt; endl;
+      sleep (2);
+      state = 1 - state;
+    }
+  }
+  else {
+    cout &lt;&lt; &quot;failed to open led&quot; &lt;&lt; endl;
+    exit(-1);
+  }
+}
+</code></pre>
+
+<h3 id="5-python:90794bf58092a6a1b29685accbdbb066">(5) Python</h3>
+
+<p>Python is installed by default.</p>
+
+<pre><code>import time
+
+filename = &quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;
+f = open(filename, &quot;w&quot;)
+state = 1
+
+while True:
+  f.write(str(state))
+  f.flush()
+  time.sleep(2)
+  state = 1 - state
+</code></pre>
+
+<h3 id="6-ruby:90794bf58092a6a1b29685accbdbb066">(6) Ruby</h3>
+
+<p>Ruby is not installed by default:</p>
+
+<p><code># sudo apt-get install ruby</code></p>
+
+<pre><code>#!/usr/bin/ruby
+
+filename = &quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;
+state = 1
+
+begin
+  file = File.open(filename, &quot;w&quot;)
+  loop do
+    file.write(state.to_s)
+    file.flush
+    sleep(2)
+    state = 1 - state
+  end
+rescue IOError =&gt; e
+  puts &quot;failed: #{e}&quot;
+ensure
+  file.close unless file == nil
+end
+</code></pre>
+
+<h3 id="7-java:90794bf58092a6a1b29685accbdbb066">(7) Java</h3>
+
+<p>Java is not installed by default:</p>
+
+<p><code># sudo apt-get install openjdk-7-jdk</code></p>
+
+<pre><code>import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+
+public class Blink {
+  public static void main(String[] args) throws IOException, InterruptedException {
+    int state = 1;
+    Path path = Paths.get(&quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;);
+    try(BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+      while (true) {
+        writer.write('0' + state);
+        writer.flush();
+        Thread.sleep(2000);
+        state = 1 - state;
+      }
+    }
+  }
+}
+</code></pre>
+
+<h3 id="8-scala:90794bf58092a6a1b29685accbdbb066">(8) Scala</h3>
+
+<p>Scala is not installed by default:</p>
+
+<p><code># sudo apt-get install scala</code></p>
+
+<pre><code>import java.io.File
+import java.io.FileWriter
+import java.io.BufferedWriter
+
+object Blink {
+  def main(args: Array[String]) {
+    var state = 1
+    val file = new File(&quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;)
+    val writer = new BufferedWriter(new FileWriter(file))
+    while (true) {
+      writer.write('0' + state)
+      writer.flush()
+      Thread.sleep (2000)
+      state = 1 - state;
+    }
+  }
+}
+</code></pre>
+
+<h3 id="9-go:90794bf58092a6a1b29685accbdbb066">(9) Go</h3>
+
+<p>Go is not installed by default</p>
+
+<p><code># sudo apt-get install golang</code></p>
+
+<pre><code>package main
+
+import (
+  &quot;log&quot;
+  &quot;os&quot;
+  &quot;strconv&quot;
+  &quot;time&quot;
+)
+
+func main() {
+  f, err := os.OpenFile(&quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;, os.O_RDWR, 0666)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer f.Close()
+  state := 1
+  for {
+    _, err = f.WriteString(strconv.Itoa(state))
+    if err != nil {
+      log.Fatal(err)
+    }
+    time.Sleep(2 * time.Second)
+    state = 1 - state
+  }
+}
+</code></pre>
+
+<h3 id="10-clojure:90794bf58092a6a1b29685accbdbb066">(10) Clojure</h3>
+
+<p>Clojure is not installed by default:</p>
+
+<p><code># sudo apt-get install clojure1.4</code></p>
+
+<pre><code>(defn blink []
+  (with-open [fw (clojure.java.io/writer &quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot; :append true)]
+    (loop [state 1]
+      (.write fw (Integer/toString state))
+      (.flush fw)
+      (Thread/sleep 2000)
+      (recur (- 1 state)))))
+(blink)
+</code></pre>
+
+<h3 id="11-pascal:90794bf58092a6a1b29685accbdbb066">(11) Pascal</h3>
+
+<p>Pascal is not installed by default:</p>
+
+<p><code># sudo apt-get install fpc</code></p>
+
+<pre><code>{$IFDEF FPC}
+  {$MODE DELPHI}
+{$ENDIF}
+
+Program Blink;
+
+uses
+  Sysutils;
+
+const
+  LED_FNAME = '/sys/class/leds/beaglebone:green:usr0/brightness';
+
+var
+  Led: TextFile;
+  State: Integer;
+
+begin
+  State:=1;
+  try
+    Assign(Led, LED_FNAME);
+    Append(Led);
+    While true do
+    begin
+      Writeln(Led, State);
+      Flush(Led);
+      Sleep(2000);
+      State:=1-State;
+    end;
+  except
+    on E: EInOutError do
+      Writeln('failed: ', E.Message);
+  end;
+  CloseFile(led);
+end.
+</code></pre>
+
+<h3 id="12-nodejs:90794bf58092a6a1b29685accbdbb066">(12) NodeJS</h3>
+
+<p>NodeJS is not installed by default:</p>
+
+<p><code># sudo apt-get install nodejs</code></p>
+
+<pre><code>var state = 1;
+setInterval(blink, 2000);
+function blink() {
+  var fs = require(&quot;fs&quot;);
+  fs.writeFile(&quot;/sys/class/leds/beaglebone:green:usr0/brightness&quot;, state, function (err) {
+      if (err) throw err;
+  });
+  state = 1 - state;
+}
+</code></pre>
+
+<h3 id="13-haskell:90794bf58092a6a1b29685accbdbb066">(13) Haskell</h3>
+
+<p>Haskell (ghc) is not installed by default:</p>
+
+<p><code># sudo apt-get install ghc</code></p>
+
+<p>TODO</p>
+
+<h3 id="13-rust:90794bf58092a6a1b29685accbdbb066">(13) Rust</h3>
+
+<p>Rust is not installed by default:</p>
+
+<p>TODO</p>
+
+<p>[linuxgpio]: <a href="https://www.kernel.org/doc/Documentation/gpio/sysfs.txt">https://www.kernel.org/doc/Documentation/gpio/sysfs.txt</a></p>
+</div>
+        </div>
+        
+
+<div>
+</div>
+
+
+      </div>
+      <div class="col-md-3">
+        <h1>
+        
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-0242048023339076"
+     data-ad-slot="7535148988">
+</ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+        </h1>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-58112445-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+
+</html>

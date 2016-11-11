@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Science, Technology, Innovation</title>
+    <link>http://mcconnma.github.io/tags/</link>
+    <description>Recent content on Science, Technology, Innovation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Feb 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://mcconnma.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Permutations and solutions of a childrens trainset</title>
+      <link>http://mcconnma.github.io/posts/trainset-p1/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://mcconnma.github.io/posts/trainset-p1/</guid>
+      <description>&lt;p&gt;The purpose of this post is to explore and discover the number of permutations of a childrens 16 piece train track set.&lt;br /&gt;
+The &lt;a href=&#34;http://www.ikea.com/ca/en/catalog/products/30064359/&#34;&gt;trainset&lt;/a&gt; of interest is the following:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/lillabo-trainset.jpg&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;This particular trainset has a total of 16 track piecies, 12 curved and 4 straight.
+The curved pieces are reversible (the straight ones are not) and 2 of the 4 straight pieces form a bridge as in the picture.
+I am interested in all solutions, for example those that use 10 or 12 pieces, not just all 16.
+Additionally, I want to solve this programatically and to create a visual representation of the solutions.
+A solution will be presented that uses Python to solve it programatically, along with a 2d graphics program called &lt;a href=&#34;http://cairographics.org/pycairo/&#34;&gt;Cairo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, we need to determine if we are talking about &lt;a href=&#34;http://www.mathsisfun.com/combinatorics/combinations-permutations.html&#34;&gt;permutations or combinantions&lt;/a&gt;?
+In the case of building a solution for a trainset, in which the order of the tracks does matter, we are talking about permutations &lt;em&gt;without repetitions&lt;/em&gt;.
+In that case, the general formula for the number of permutations is the following:&lt;/p&gt;
+
+&lt;p&gt;$$n!/(n-r)!$$&lt;/p&gt;
+
+&lt;p&gt;Where n is the number of choices, in our case 16 for number of tracks, and r is how many are chosen from the set.  For example, the minimilist solution would be a circle, in which 8 pieces are used.  So, in order to find the one and only solution of 8 pieces, we would need to check the following number of permutations:&lt;/p&gt;
+
+&lt;p&gt;$$16!/(8)! = 518,918,400$$&lt;/p&gt;
+
+&lt;p&gt;That is a non-trivial number of permutations to verify that a solution is formed.  We would also need to check for solutions that have 9 pieces, 10 pieces, upto 16.  So the total number of potential solutions looks like:&lt;/p&gt;
+
+&lt;p&gt;$$16!/8! + 16!/7! + 16!/6! + 16!/5! + 16!/4! + 16!/3! + 16!/2! + 16!/1! + 16!/0!$$&lt;/p&gt;
+
+&lt;p&gt;It equates to:&lt;/p&gt;
+
+&lt;p&gt;$$5.687397556×10^{13}$$&lt;/p&gt;
+
+&lt;p&gt;For a more detailed analysis of the problem, see this question on &lt;a href=&#34;http://cs.stackexchange.com/questions/40296/how-many-permutations-in-a-trainset&#34;&gt;stackexchange&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Most programming languages have functions or libraries for generating permuations, such as for &lt;a href=&#34;https://docs.python.org/2/library/itertools.html&#34;&gt;Python&lt;/a&gt;.
+However, using this approach did prove unpractical (runing on my old PC for example) due to the number of solutions that needed to be tested.
+A solution that worked better was to use a a [K-ary tree or ternary tree][kary-tree] where K=3 and cr=&amp;lsquo;curve right&amp;rsquo;, cl=&amp;lsquo;curve left&amp;rsquo;, and s=&amp;lsquo;straight&amp;rsquo; and looks like the following:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/tree.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;In this approach, I could test the path to a particular node for given depths of tree 8-16.
+This proved to be more practical as it removes duplicates from the permutations approach.
+The formula for the total number of nodes in a perfect k-ary tree, with height h is:&lt;/p&gt;
+
+&lt;p&gt;$$\left\lfloor\frac{k^{h+1} - 1}{k-1}\right\rfloor$$&lt;/p&gt;
+
+&lt;p&gt;In this approach, we want to calculate the total number of nodes with a depth of 16 &lt;strong&gt;minus&lt;/strong&gt; the number of nodes with depth 8, which is the following:&lt;/p&gt;
+
+&lt;p&gt;$$\left\lfloor\frac{3^{17} - 1}{2}\right\rfloor - \left\lfloor\frac{3^{7} - 1}{2}\right\rfloor$$&lt;/p&gt;
+
+&lt;p&gt;$$=129,140,162.5 - 2186.5 = 129,137,976$$&lt;/p&gt;
+
+&lt;p&gt;That is a more managelable number of solutions to calculate.
+In programatic terms, the algorithm will build a 3-ary (ternary) tree and test the path to a leaf-node at a particular depth.
+The code for this solution can be found on &lt;a href=&#34;https://github.com/mcconnma/trainset&#34;&gt;Github&lt;/a&gt;.
+I use &lt;a href=&#34;https://wiki.python.org/moin/Generators&#34;&gt;Python generators&lt;/a&gt; which will &amp;lsquo;yield&amp;rsquo; a path at a depth. It requires no writing/storing paths to disk/memory (space efficient):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;python&#34;&gt;
+def add_children(path, depth):
+  if (depth == 1):
+    yield path + [&#39;cl&#39;]
+    yield path + [&#39;s&#39;]
+    yield path + [&#39;cr&#39;]
+  else:
+    for p in add_children(path + [&#39;cl&#39;], depth - 1): yield p
+    for p in add_children(path + [&#39;s&#39;], depth - 1): yield p
+    for p in add_children(path + [&#39;cr&#39;], depth - 1): yield p
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and where:
+&lt;pre&gt;&lt;code class=&#34;python&#34;&gt;
+def build_tree(depth):
+  r = []
+  i = 0
+  for path in add_children(r, depth):
+    i = i+1
+    if not valid(path):
+      continue
+    if duplicate(path):
+      continue
+    tb = TrackBuilder(str(path))
+    if testpath(tb, path):
+      solutions.append(path)
+      imageid = str(depth) + &amp;lsquo;-&amp;rsquo; + str(i)
+      tb.createImage(imageid)
+      print(str(imageid) + &amp;lsquo;:&amp;rsquo; + str(path))
+  print(&amp;ldquo;total checked: &amp;ldquo; + str(i))
+&lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;Once a track path is generated, the following occurs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it is tested to see if it is valid (does it have too many straight pieces for example?)&lt;/li&gt;
+&lt;li&gt;it is a mirror image? (a circle consisting of 8 cr pieces is the same as 8 cl pieces)&lt;/li&gt;
+&lt;li&gt;is it a rotation? (same path but different starting piece)&lt;/li&gt;
+&lt;li&gt;it is built using &lt;a href=&#34;http://cairographics.org/pycairo/&#34;&gt;Cairo&lt;/a&gt; and tested to see if starting point = ending point and starting arc = ending arc&lt;/li&gt;
+&lt;li&gt;if all those conditions pass, an image (png) is generated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Running for depth 8 produced 1 solution, as expected:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 8
+8-1:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;]
+total checked: 6561
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and the solution looks like:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/8-1.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 9 produced 0 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 9
+total checked: 19683
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 10 produced 1 solution:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 10
+10-245:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+total checked: 59049
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and the solution looks like:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/10-245.png&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 11 produced 0 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 11
+total checked: 177147
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 12 produced 2 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 12
+12-1461:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+12-2921:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+total checked: 531441
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 12 pieces:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/12.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 13 produced 0 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 13
+total checked: 1594323
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 14 produced 9 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 14
+14-10941:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-13857:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-15317:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+14-15321:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-24069:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-41573:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+14-63453:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-79059:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+14-120341:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+total checked: 4,782,969
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 14 pieces:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/14.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 15 produced 0 solutions:
+&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 15
+total checked: 14,348,907
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Running for depth 16 produced 15 solutions:&lt;/p&gt;
+
+&lt;p&gt;&lt;pre&gt;&lt;code class=&#34;bash&#34;&gt;$ ./main.py 16
+16-32801:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+16-91869:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-100617:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-126861:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-144365:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+16-144377:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+16-144381:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-223113:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-239121:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-249357:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-301865:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+16-380597:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+16-717393:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-721821:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;]
+16-1089293:[&amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cr&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;lsquo;cl&amp;rsquo;, &amp;rsquo;s&amp;rsquo;, &amp;rsquo;s&amp;rsquo;]
+$ total checked: 43,046,721
+&lt;/pre&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;and here&amp;rsquo;s an animated gif showing all solutions for 16 pieces:
+&lt;div style=&#34;text-align:center&#34;&gt;&lt;img src=&#34;http://mcconnma.github.io/trainset/16.gif&#34; alt=&#34;&#34; /&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;A few notes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;only 1 solution includes a path &lt;em&gt;under the bridge&lt;/em&gt; (&lt;strong&gt;16-32801&lt;/strong&gt;).&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;total solutions = 1(@8) + 0(@9) + 1(@10) + 0(@11) + 4(@12) + 0(@13) + 9(@14) + 0(@15) + 15(@16) = &lt;strong&gt;30&lt;/strong&gt; solutions&lt;/li&gt;
+&lt;li&gt;personal favorite (&lt;strong&gt;16-717393&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are a few things that could be done for this project:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;It&amp;rsquo;s not a concurrent solution (only 1 CPU process runs at a time). Calculating solutions for depths of 8-12 ran in under a minute or two &amp;hellip; a depth of 16 took an hour (old PC).&lt;/li&gt;
+&lt;li&gt;This program finds &amp;lsquo;perfect&amp;rsquo; solutions where start point = end point. There is a lot of &amp;lsquo;give&amp;rsquo; in the tracks. Several workable solutions exist by bending the tracks to &amp;lsquo;fit&amp;rsquo;.&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thanks for reading. Send me a pull request on &lt;a href=&#34;https://github.com/mcconnma/trainset&#34;&gt;Github&lt;/a&gt; if you think you have a contribution.&lt;/p&gt;
+
+&lt;p&gt;[kary-tree]: &lt;a href=&#34;https://en.wikipedia.org/wiki/K-ary_tree&#34;&gt;https://en.wikipedia.org/wiki/K-ary_tree&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
